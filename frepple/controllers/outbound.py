@@ -1277,6 +1277,8 @@ class exporter(object):
                 "skill",
                 "search_mode",
                 "secondary_workcenter",
+                "x_studio_fixed_duration",
+                "x_operator_workload",
             ],
         ):
             if not i["bom_id"]:
@@ -1722,7 +1724,7 @@ class exporter(object):
                                     )
                                 )
 
-                            yield "<suboperation>" '<operation name=%s %spriority="%s" duration_per="%s" xsi:type="operation_time_per">\n' "<location name=%s/>\n" '<loads><load quantity="%f" search=%s><resource name=%s/>%s</load>%s</loads>\n' % (
+                            yield "<suboperation>" '<operation name=%s %spriority="%s" %s="%s" xsi:type="%s">\n' "%s" "<location name=%s/>\n" '<loads><load quantity="%f" search=%s><resource name=%s/>%s</load>%s</loads>\n' % (
                                 quoteattr(name),
                                 (
                                     ("description=%s " % quoteattr(i["code"]))
@@ -1731,9 +1733,27 @@ class exporter(object):
                                 ),
                                 counter * 10,
                                 (
+                                    "duration"
+                                    if step["x_studio_fixed_duration"]
+                                    else "duration_per"
+                                ),
+                                (
                                     self.convert_float_time(step["time_cycle"] / 1440.0)
                                     if step["time_cycle"] and step["time_cycle"] > 0
                                     else "P0D"
+                                ),
+                                (
+                                    "operation_fixed_time"
+                                    if step["x_studio_fixed_duration"]
+                                    else "operation_time_per"
+                                ),
+                                (
+                                    (
+                                        '\n<stringproperty name="operator_workload" value="%s"/>\n'
+                                        % step["x_operator_workload"]
+                                    )
+                                    if step["x_operator_workload"]
+                                    else ""
                                 ),
                                 quoteattr(location),
                                 1,
