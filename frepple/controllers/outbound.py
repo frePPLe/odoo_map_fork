@@ -1862,6 +1862,7 @@ class exporter(object):
                     "date_order",
                     "picking_policy",
                     "warehouse_id",
+                    "x_studio_so_shipment_date",  # MAP CUSTO
                 ],
             )
         }
@@ -1917,9 +1918,14 @@ class exporter(object):
                 # Not interested in this sales order...
                 continue
             due = self.formatDateTime(
-                j.get("commitment_date", False) or j["date_order"]
+                j.get("x_studio_so_shipment_date", False)
+                or j.get("commitment_date", False)
+                or j["date_order"]
             )
-            priority = 1  # We give all customer orders the same default priority
+            # MAP CUSTOMIZATION
+            # SO get priority 10
+            # Quotes get priority 15
+            priority = 10
 
             # Possible sales order status are 'draft', 'sent', 'sale', 'done' and 'cancel'
             state = j.get("state", "sale")
@@ -1931,6 +1937,7 @@ class exporter(object):
                     i["product_uom"],
                     self.product_product[i["product_id"][0]]["template"],
                 )
+                priority = 15
             elif state == "sale":
                 if i["move_ids"] and any(
                     [mv_id in stock_moves_dict for mv_id in i["move_ids"]]
