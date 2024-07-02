@@ -1920,9 +1920,7 @@ class exporter(object):
                 # Not interested in this sales order...
                 continue
             due = self.formatDateTime(
-                j.get("x_studio_so_shipment_date", False)
-                or j.get("commitment_date", False)
-                or j["date_order"]
+                j.get("commitment_date", False) or j["date_order"]
             )
             # MAP CUSTOMIZATION
             # SO get priority 10
