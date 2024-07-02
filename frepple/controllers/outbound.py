@@ -804,7 +804,7 @@ class exporter(object):
             loc["id"]
             for loc in self.generator.getData(
                 "stock.location",
-                search=[("usage", "=", "internal")],
+                search=[("usage", "=", "internal"), ("warehouse_id.active", "=", True)],
                 fields=["id"],
             )
         ]
