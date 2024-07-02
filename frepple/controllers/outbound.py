@@ -413,7 +413,9 @@ class exporter(object):
                     else None
                 ),
                 "warehouse_id": (
-                    self.warehouses[i["warehouse_id"][0]] if i["warehouse_id"] else None
+                    self.warehouses[i["warehouse_id"][0]]
+                    if i["warehouse_id"] and i["warehouse_id"][0] in self.warehouses
+                    else None
                 ),
             }
 
