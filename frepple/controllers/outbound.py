@@ -1280,7 +1280,7 @@ class exporter(object):
                 "search_mode",
                 "secondary_workcenter",
                 "x_studio_fixed_duration",
-                "x_studio_operator_workload",
+                "x_studio_charge_oprateur",
             ],
         ):
             if not i["bom_id"]:
@@ -1752,9 +1752,9 @@ class exporter(object):
                                 (
                                     (
                                         '\n<stringproperty name="operator_workload" value="%s"/>\n'
-                                        % step["x_studio_operator_workload"]
+                                        % step["x_studio_charge_oprateur"]
                                     )
-                                    if step["x_studio_operator_workload"]
+                                    if step["x_studio_charge_oprateur"]
                                     else ""
                                 ),
                                 quoteattr(location),
